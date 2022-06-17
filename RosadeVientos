@@ -1,0 +1,41 @@
+## Código para generr Rosas de Vientos usando la librería Windrose
+#-----------------------------------------------------------------
+# Librerías requeridas
+from windrose import WindroseAxes
+from matplotlib import pyplot as plt
+import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+import numpy as np
+import pandas as pd
+from windrose import plot_windrose
+#-------------------------------------------------------------------
+## Importamos los Datos
+# Carga el archivo que contiene la dirección y velocidad del viento
+df = pd.read_csv('Rosa1.csv')
+# Declaramos las varibles
+wd= df.ValueeD                 #Dirección de viento
+ws= df.ValueeVms               # Velocidaad del viento
+#------------------------------------------------------------------
+## Rosa de Vientos como un Histograma Apilado Normado (representado en porcentaje)
+ax = WindroseAxes.from_ax()
+ax.bar(wd, ws, normed=True, opening=1.0, edgecolor='white')
+ax.set_legend()
+plt.title ('Rosa de vientos')
+#--------------------------------------------------------------------
+## Rosa de Vientos con relleno y mapa de color definido
+ax = WindroseAxes.from_ax()
+ax.contourf(wd, ws, bins=np.arange(0, 8, 1), cmap=cm.jet)
+ax.set_legend()
+#------------------------------------------------------------------
+## Rosa de Vientos con relleno y líneas de contorno
+ax = WindroseAxes.from_ax()
+ax.contourf(df.ValueeD, df.ValueeVms, bins=np.arange(0, 8, 1), cmap=cm.hot)
+ax.contour(df.ValueeD, df.ValueeVms, bins=np.arange(0, 8, 1), colors='black')
+ax.set_legend()
+#------------------------------------------------------------------
+## Rosa de Vientos con líneas de contorno
+ax = WindroseAxes.from_ax()
+ax.contour(df.ValueeD, df.ValueeVms, bins=np.arange(0, 8, 1), cmap=cm.hot, lw=3)
+ax.set_legend()
+#-----------------------------------------------------------------
+plt.show()
